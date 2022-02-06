@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Create new product {% endblock %}
+
+{% block body %}
+    <form action="{{ path('product_create') }}" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price"><br>
+
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description"><br>
+
+        <label for="is_hidden">IsHidden:</label><br>
+        <input type="checkbox" id="is_hidden" name="is_hidden"><br>
+
+        <button>Save</button>
+    </form>
+{% endblock %}

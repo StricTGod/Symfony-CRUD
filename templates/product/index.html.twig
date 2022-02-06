@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Products {% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+
+        <a class="btn btn-success" href="{{ path('open_create_modal') }}" role="button">Create</a>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+            </tr>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.description }}</td>
+                {#            <td><a class="btn btn-info" href="{{ path('product_show', { 'id': product.id }) }}" role="button">Show</a></td>#}
+                <td><a class="btn btn-primary" href="{{ path('open_update_modal', { id: product.id }) }}" role="button">Edit</a></td>
+                <td><a class="btn btn-danger" href="{{ path('product_delete', { id: product.id }) }}" role="button">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}

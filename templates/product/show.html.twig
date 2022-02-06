@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} ShowProduct {% endblock %}
+
+{% block body %}
+    <div>
+        <form>
+            <label for="id">Id:</label><br>
+            <input class="disabled" type="text" id="id" name="id" value="{{ product.id }}"><br>
+
+            <label for="name">Name:</label><br>
+            <input class="disabled" type="text" id="name" name="name" value="{{ product.name }}"><br>
+
+            <label for="price">Price:</label><br>
+            <input class="disabled" type="text" id="price" name="price" value="{{ product.price }}"><br>
+
+            <label for="description">Description:</label><br>
+            <input class="disabled" type="text" id="description" name="description" value="{{ product.description }}" ><br>
+        </form>
+    </div>
+{% endblock %}

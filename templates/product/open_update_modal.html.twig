@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Update product {% endblock %}
+
+{% block body %}
+    <form action="{{ path('product_update', { id: product.id }) }}" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" value="{{ product.name }}"><br>
+
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price" value="{{ product.price }}"><br>
+
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description" value="{{ product.description }}"><br><br>
+
+        <button>Save</button>
+    </form>
+{% endblock %}
