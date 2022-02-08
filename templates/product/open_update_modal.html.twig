@@ -3,16 +3,33 @@
 {% block title %} Update product {% endblock %}
 
 {% block body %}
+<div class="form-group">
     <form action="{{ path('product_update', { id: product.id }) }}" method="POST">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" value="{{ product.name }}"><br>
 
-        <label for="price">Price:</label><br>
-        <input type="number" id="price" name="price" value="{{ product.price }}"><br>
+        <div class="col-sm-3" style="display: none">
+            <label for="id" class="form-control-label">Id</label><br>
+            <input type="number" class="form-control" id="id" name="id" value="{{ product.id }}" readonly><br>
+        </div>
 
-        <label for="description">Description:</label><br>
-        <input type="text" id="description" name="description" value="{{ product.description }}"><br><br>
+        <div class="col-sm-3">
+            <label for="name" class="form-control-label">Name</label><br>
+            <input type="text" class="form-control" id="name" name="name" value="{{ product.name }}"><br>
+        </div>
 
-        <button>Save</button>
+        <div class="col-sm-3">
+            <label for="price" class="form-control-label">Price</label><br>
+            <input type="number" class="form-control" id="price" name="price" value="{{ product.price }}"><br>
+        </div>
+
+        <div class="col-sm-3">
+            <label for="description" class="form-control-label">Description</label><br>
+            <input type="text" class="form-control" id="description" name="description" value="{{ product.description }}"><br>
+        </div>
+
+        <div class="d-grid gap-2 d-md-block">
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-secondary" href="{{ path('products') }}" role="button">Back</a>
+        </div>
     </form>
+</div>
 {% endblock %}
