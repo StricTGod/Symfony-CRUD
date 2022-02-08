@@ -46,7 +46,7 @@ class ProductController extends AbstractController
         $entityManager->persist($product);
         $entityManager->flush();
 
-        return $this->redirectToRoute('open_create_modal');
+        return new Response('The product was created');
     }
 
     /**
@@ -75,9 +75,7 @@ class ProductController extends AbstractController
         $entityManager->persist($product);
         $entityManager->flush();
 
-        return $this->redirectToRoute('open_update_modal', [
-            'id' => $product->getId()
-        ]);
+        return new Response('The product was updated');
     }
 
     /**
