@@ -46,7 +46,7 @@ class ProductController extends AbstractController
         $entityManager->persist($product);
         $entityManager->flush();
 
-        return $this->redirectToRoute('products');
+        return new Response('The product was created');
     }
 
     /**
@@ -57,20 +57,16 @@ class ProductController extends AbstractController
         $entityManager = $doctrine->getManager();
         $product = $entityManager->getRepository(Product::class)->find($id);
 
-        $request->get('name');
-        $request->get('price');
-        $request->get('description');
-
         return $this->render('product/open_update_modal.html.twig', ['product' => $product]);
     }
 
     /**
-     * @Route("/product-update/{id}", name="product_update", methods={"POST"})
+     * @Route("/product-update", name="product_update", methods={"POST"})
      */
-    public function updateProduct(ManagerRegistry $doctrine, Request $request, int $id): Response
+    public function updateProduct(ManagerRegistry $doctrine, Request $request): Response
     {
         $entityManager = $doctrine->getManager();
-        $product = $entityManager->getRepository(Product::class)->find($id);
+        $product = $entityManager->getRepository(Product::class)->find($request->get('id'));
 
         $product->setName($request->get('name'));
         $product->setPrice($request->get('price'));
@@ -79,7 +75,7 @@ class ProductController extends AbstractController
         $entityManager->persist($product);
         $entityManager->flush();
 
-        return $this->redirectToRoute('products');
+        return new Response('The product was updated');
     }
 
     /**
