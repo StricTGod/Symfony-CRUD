@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Create new category {% endblock %}
+
+{% block body %}
+    <div class="form-group">
+        <form action="{{ path('category_create') }}" method="POST">
+
+            <div class="col-sm-3">
+                <label for="name" class="form-control-label">Name:</label><br>
+                <input type="text" class="form-control" id="name" name="name"><br>
+            </div>
+
+            <div class="d-grid gap-2 d-md-block">
+                <button type="submit" class="btn btn-success">Save</button>
+                <a class="btn btn-secondary" href="{{ path('products') }}" role="button">Back</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
