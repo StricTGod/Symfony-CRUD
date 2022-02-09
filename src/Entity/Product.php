@@ -5,27 +5,42 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
+
+/**
+ * @ORM\Entity(repositoryClass=ProductRepository::class)
+ */
 class Product
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $name;
 
-    #[ORM\Column(type: 'integer')]
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $price;
 
-    #[ORM\Column(type: 'text')]
+    /**
+     * @ORM\Column(type="text")
+     */
     private $description;
 
-    #[ORM\Column(type: 'boolean')]
+    /**
+     * @ORM\Column(type="boolean")
+     */
     private $isHidden;
 
-    #[ORM\OneToOne(inversedBy: 'products', targetEntity: Category::class, cascade: ['persist', 'remove'])]
+    /**
+     * @ORM\OneToOne(targetEntity="Category", inversedBy="products")
+     */
     private $category;
 
     public function getId(): ?int
