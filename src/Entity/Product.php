@@ -25,6 +25,9 @@ class Product
     #[ORM\Column(type: 'boolean')]
     private $isHidden;
 
+    #[ORM\OneToOne(inversedBy: 'products', targetEntity: Category::class, cascade: ['persist', 'remove'])]
+    private $category;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Product
     public function setIsHidden(bool $isHidden): self
     {
         $this->isHidden = $isHidden;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

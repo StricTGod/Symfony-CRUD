@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,9 +50,33 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/open-create-category", name="open_create_category", methods={"GET"})
+     */
+    public function openCreateCategory(): Response
+    {
+        return $this->render('category/open_create_category.html.twig');
+    }
+
+    /**
+     * @Route("category/create", name="category_create", methods={"POST"})
+     */
+    public function createCategory(ManagerRegistry $doctrine, Request $request): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $category = new Category();
+
+        $category->setName($request->get('name'));
+
+        $entityManager->persist($category);
+        $entityManager->flush();
+
+        return new Response('The category was created');
+    }
+    
+    /**
      * @Route("/open-update-modal/{id}", name="open_update_modal", methods={"GET"})
      */
-    public function openUpdateModal(ManagerRegistry $doctrine, Request $request, int $id): Response
+    public function openUpdateModal(ManagerRegistry $doctrine, int $id): Response
     {
         $entityManager = $doctrine->getManager();
         $product = $entityManager->getRepository(Product::class)->find($id);
