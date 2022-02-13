@@ -21,15 +21,25 @@
                 <input type="text" class="form-control" id="description" name="description"><br>
             </div>
 
-            <div class="form-check">
+            <div class="col-sm-3">
+                <select name="category_id" id="select">
+                    <option selected>Choose category</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div><br>
+
+            <div class="col-sm-3">
                 <input class="form-check-input" type="checkbox" id="is_hidden" name="is_hidden">
                 <label class="form-check-label" for="is_hidden">IsHidden</label><br>
-            </div>
+            </div><br>
 
             <div class="d-grid gap-2 d-md-block">
                 <button type="submit" class="btn btn-success">Save</button>
                 <a class="btn btn-secondary" href="{{ path('products') }}" role="button">Back</a>
             </div>
+
         </form>
     </div>
 {% endblock %}

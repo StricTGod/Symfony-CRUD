@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Product;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,9 +26,11 @@ class ProductController extends AbstractController
     /**
      * @Route("/open-create-modal", name="open_create_modal", methods={"GET"})
      */
-    public function openCreateModal(): Response
+    public function openCreateModal(ManagerRegistry $doctrine): Response
     {
-        return $this->render('product/new.html.twig');
+        $categories = $doctrine->getManager()->getRepository(Category::class)->findAll();
+
+        return $this->render('product/new.html.twig', ['categories' => $categories]);
     }
 
     /**
@@ -35,13 +38,15 @@ class ProductController extends AbstractController
      */
     public function createProduct(ManagerRegistry $doctrine, Request $request): Response
     {
-        $entityManager = $doctrine->getManager();
         $product = new Product();
+        $entityManager = $doctrine->getManager();
+        $category = $entityManager->getRepository(Category::class)->find($request->get('category_id'));
 
         $product->setName($request->get('name'));
         $product->setPrice($request->get('price'));
         $product->setDescription($request->get('description'));
         $product->setIsHidden($request->get('is_hidden'));
+        $product->setCategory($category);
 
         $entityManager->persist($product);
         $entityManager->flush();
@@ -81,7 +86,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/product-delete/{id}", name="product_delete", methods={"GET"})
      */
-    public function deleteProduct(ManagerRegistry $doctrine, Request $request, int $id): Response
+    public function deleteProduct(ManagerRegistry $doctrine, int $id): Response
     {
         $entityManager = $doctrine->getManager();
         $product = $entityManager->getRepository(Product::class)->find($id);
@@ -90,5 +95,34 @@ class ProductController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('products');
+    }
+
+    /**
+     * @Route("/test", name="test", methods={"GET"})
+     */
+    public function test(ManagerRegistry $doctrine)
+    {
+        $entityManager = $doctrine->getManager();
+        $products = $entityManager->getRepository(Product::class)->findAll();
+        $categories = $entityManager->getRepository(Category::class)->findAll();
+
+        return $this->render('testcase/test_case.html.twig', [
+            'products' => $products,
+            'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * @Route("/test-case", name="test_case", methods={"POST"})
+     */
+    public function testCase(ManagerRegistry $doctrine, Request $request)
+    {
+        $entityManager = $doctrine->getManager();
+        $products = $entityManager->getRepository(Product::class)->find($request->get('product_id'));
+        $categories = $entityManager->getRepository(Category::class)->find($request->get('category_id'));
+
+        $result = array('productName' => $products->getName(), 'categoryName' => $categories->getName());
+
+        return new JsonResponse($result);
     }
 }

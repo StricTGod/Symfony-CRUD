@@ -15,6 +15,7 @@
                 <th>Name</th>
                 <th>Price</th>
                 <th>Description</th>
+                <th>Category</th>
             </tr>
         {% for product in products %}
             <tr>
@@ -22,6 +23,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.description }}</td>
+                <td>{{ product.category.name ?? ''}}</td>
                 <td><a class="btn btn-primary" href="{{ path('open_update_modal', { id: product.id }) }}" role="button">Edit</a></td>
                 <td><a class="btn btn-danger" href="{{ path('product_delete', { id: product.id }) }}" role="button">Delete</a></td>
             </tr>
