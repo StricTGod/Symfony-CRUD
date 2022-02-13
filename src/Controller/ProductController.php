@@ -40,7 +40,7 @@ class ProductController extends AbstractController
     {
         $product = new Product();
         $entityManager = $doctrine->getManager();
-        $category = $entityManager->getRepository(Category::class)->find($request->get('category_id'));
+        $category = $entityManager->getRepository(Category::class)->find($request->get('category'));
 
         $product->setName($request->get('name'));
         $product->setPrice($request->get('price'));
