@@ -22,7 +22,7 @@
             </div>
 
             <div class="col-sm-3">
-                <select name="category" id="select">
+                <select name="category_id">
                     <option selected>Choose category</option>
                     {% for category in categories %}
                         <option value="{{ category.id }}">{{ category.name }}</option>
