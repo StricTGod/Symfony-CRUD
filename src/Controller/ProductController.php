@@ -96,33 +96,4 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('products');
     }
-
-    /**
-     * @Route("/test", name="test", methods={"GET"})
-     */
-    public function test(ManagerRegistry $doctrine)
-    {
-        $entityManager = $doctrine->getManager();
-        $products = $entityManager->getRepository(Product::class)->findAll();
-        $categories = $entityManager->getRepository(Category::class)->findAll();
-
-        return $this->render('testcase/test_case.html.twig', [
-            'products' => $products,
-            'categories' => $categories,
-        ]);
-    }
-
-    /**
-     * @Route("/test-case", name="test_case", methods={"POST"})
-     */
-    public function testCase(ManagerRegistry $doctrine, Request $request)
-    {
-        $entityManager = $doctrine->getManager();
-        $products = $entityManager->getRepository(Product::class)->find($request->get('product_id'));
-        $categories = $entityManager->getRepository(Category::class)->find($request->get('category_id'));
-
-        $result = array('productName' => $products->getName(), 'categoryName' => $categories->getName());
-
-        return new JsonResponse($result);
-    }
 }
