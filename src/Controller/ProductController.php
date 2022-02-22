@@ -2,23 +2,38 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
 use App\Entity\Product;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
+    private ProductRepository $productRepository;
+    private CategoryRepository $categoryRepository;
+    private EntityManagerInterface $em;
+
+    public function __construct(
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        EntityManagerInterface $em
+    )
+    {
+        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->em = $em;
+    }
+
     /**
      * @Route("/products", name="products", methods={"GET"})
      */
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(): Response
     {
-        $products = $doctrine->getRepository(Product::class)->findAll();
+        $products = $this->productRepository->getProducts();
 
         return $this->render('product/index.html.twig', ['products' => $products]);
     }
@@ -26,9 +41,9 @@ class ProductController extends AbstractController
     /**
      * @Route("/open-create-modal", name="open_create_modal", methods={"GET"})
      */
-    public function openCreateModal(ManagerRegistry $doctrine): Response
+    public function openCreateModal(): Response
     {
-        $categories = $doctrine->getManager()->getRepository(Category::class)->findAll();
+        $categories = $this->categoryRepository->getCategories();
 
         return $this->render('product/new.html.twig', ['categories' => $categories]);
     }
@@ -36,11 +51,10 @@ class ProductController extends AbstractController
     /**
      * @Route("product/create", name="product_create", methods={"POST"})
      */
-    public function createProduct(ManagerRegistry $doctrine, Request $request): Response
+    public function createProduct(Request $request): Response
     {
         $product = new Product();
-        $entityManager = $doctrine->getManager();
-        $category = $entityManager->getRepository(Category::class)->find($request->get('category_id'));
+        $category = $this->categoryRepository->getCategoryById($request->get('category_id'));
 
         $product->setName($request->get('name'));
         $product->setPrice($request->get('price'));
@@ -48,8 +62,8 @@ class ProductController extends AbstractController
         $product->setIsHidden($request->get('is_hidden'));
         $product->setCategory($category);
 
-        $entityManager->persist($product);
-        $entityManager->flush();
+        $this->em->persist($product);
+        $this->em->flush();
 
         return new Response('The product was created');
     }
@@ -57,10 +71,9 @@ class ProductController extends AbstractController
     /**
      * @Route("/open-update-modal/{id}", name="open_update_modal", methods={"GET"})
      */
-    public function openUpdateModal(ManagerRegistry $doctrine, int $id): Response
+    public function openUpdateModal(int $id): Response
     {
-        $entityManager = $doctrine->getManager();
-        $product = $entityManager->getRepository(Product::class)->find($id);
+        $product = $this->productRepository->getProductById($id);
 
         return $this->render('product/open_update_modal.html.twig', ['product' => $product]);
     }
@@ -68,17 +81,16 @@ class ProductController extends AbstractController
     /**
      * @Route("/product-update", name="product_update", methods={"POST"})
      */
-    public function updateProduct(ManagerRegistry $doctrine, Request $request): Response
+    public function updateProduct(Request $request): Response
     {
-        $entityManager = $doctrine->getManager();
-        $product = $entityManager->getRepository(Product::class)->find($request->get('id'));
+        $product = $this->productRepository->getProductById($request->get('id'));
 
         $product->setName($request->get('name'));
         $product->setPrice($request->get('price'));
         $product->setDescription($request->get('description'));
 
-        $entityManager->persist($product);
-        $entityManager->flush();
+        $this->em->persist($product);
+        $this->em->flush();
 
         return new Response('The product was updated');
     }
@@ -86,13 +98,12 @@ class ProductController extends AbstractController
     /**
      * @Route("/product-delete/{id}", name="product_delete", methods={"GET"})
      */
-    public function deleteProduct(ManagerRegistry $doctrine, int $id): Response
+    public function deleteProduct(int $id): Response
     {
-        $entityManager = $doctrine->getManager();
-        $product = $entityManager->getRepository(Product::class)->find($id);
+        $product = $this->productRepository->getProductById($id);
 
-        $entityManager->remove($product);
-        $entityManager->flush();
+        $this->em->remove($product);
+        $this->em->flush();
 
         return $this->redirectToRoute('products');
     }
