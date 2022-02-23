@@ -22,17 +22,24 @@
             </div>
 
             <div class="col-sm-3">
-                <select name="category_id">
-                    <option selected>Choose category</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
-                    {% endfor %}
-                </select>
+                <label>
+                    <select name="category_id">
+                        <option selected>Choose category</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
             </div><br>
 
             <div class="col-sm-3">
-                <input class="form-check-input" type="checkbox" id="is_hidden" name="is_hidden">
-                <label class="form-check-label" for="is_hidden">IsHidden</label><br>
+                <label>
+                    <select name="is_hidden">
+                        <option selected>IsHidden</option>
+                        <option value="1">True</option>
+                        <option value="0">False</option>
+                    </select>
+                </label>
             </div><br>
 
             <div class="d-grid gap-2 d-md-block">
