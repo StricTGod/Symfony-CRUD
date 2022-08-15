@@ -19,9 +19,12 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    public function getCategories()
+    public function getCategories(string $sortDir)
     {
-        return $this->findAll();
+        $qb = $this->createQueryBuilder('c');
+        $qb->orderBy('c.id', $sortDir);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function getCategoryById($id)
@@ -29,6 +32,7 @@ class CategoryRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c')
             ->where('c.id = :id')
             ->setParameter('id', $id);
+
         return $qb->getQuery()->getOneOrNullResult();
     }
 }

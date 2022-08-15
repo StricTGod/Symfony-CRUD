@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +12,28 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
 {
+    private CategoryRepository $categoryRepository;
+    private EntityManagerInterface $em;
+
+    public function __construct(
+        CategoryRepository $categoryRepository,
+        EntityManagerInterface $em
+    ){
+        $this->categoryRepository = $categoryRepository;
+        $this->em = $em;
+    }
+
+    /**
+     * @Route("/categories", name="categories", methods={"GET"})
+     */
+    public function listOfCategory(Request $request): Response
+    {
+        $sortDir = $request->query->get('sortDir') ?? 'ASC';
+
+        $categories = $this->categoryRepository->getCategories($sortDir);
+
+        return $this->render('category/list_of_category.html.twig', ['categories' => $categories]);
+    }
 
     /**
      * @Route("/open-create-category", name="open_create_category", methods={"GET"})
@@ -23,17 +46,15 @@ class CategoryController extends AbstractController
     /**
      * @Route("category/create", name="category_create", methods={"POST"})
      */
-    public function createCategory(ManagerRegistry $doctrine, Request $request): Response
+    public function createCategory(Request $request): Response
     {
-        $entityManager = $doctrine->getManager();
         $category = new Category();
 
         $category->setName($request->get('name'));
 
-        $entityManager->persist($category);
-        $entityManager->flush();
+        $this->em->persist($category);
+        $this->em->flush();
 
         return new Response('The category was created');
     }
-
 }

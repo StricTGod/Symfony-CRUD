@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Todos {% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Created_at</th>
+                <th>isCompleted</th>
+            </tr>
+            {% for todo in todos %}
+                <tr>
+                    <td>{{ todo.name }}</td>
+                    <td>{{ todo.createdAt|date('Y-m-d') }}</td>
+                    <td>{{ todo.isCompleted ? 'True' : 'False'}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
