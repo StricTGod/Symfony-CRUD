@@ -30,7 +30,7 @@ class Todo
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private \DateTimeInterface $completed_at;
+    private ?\DateTimeInterface $completed_at;
 
     /**
      * @ORM\Column(type="boolean", options={"default" = false})
