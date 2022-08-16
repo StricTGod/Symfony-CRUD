@@ -25,7 +25,7 @@ class TodoController extends AbstractController
      */
     public function index(): Response
     {
-        $todos = $this->todoRepository->findAll();
+        $todos = $this->todoRepository->findBy([], ['created_at' => 'DESC']);
 
         return $this->render('todo/index.html.twig', [
             'todos' => $todos,

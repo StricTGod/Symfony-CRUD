@@ -14,7 +14,7 @@
                 <tr>
                     <td>{{ todo.name }}</td>
                     <td>{{ todo.createdAt|date('Y-m-d') }}</td>
-                    <td>{{ todo.isCompleted ? 'True' : 'False'}}</td>
+                    <td>{{ todo.isCompleted ? true : false }}</td>
                 </tr>
             {% endfor %}
         </table>
