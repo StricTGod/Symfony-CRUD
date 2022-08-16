@@ -19,11 +19,14 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    public function getProducts()
+    public function getProducts(string $sortDir)
     {
-        $qb = $this->createQueryBuilder('p')
-            ->where('p.isHidden = :isHidden')
-            ->setParameter('isHidden', false);
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->where('p.isHidden = :isHidden')
+        ->orderBy('p.id', $sortDir)
+        ->setParameter('isHidden', false);
+
         return $qb->getQuery()->getResult();
     }
 
@@ -32,6 +35,7 @@ class ProductRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('p')
             ->where('p.id = :id')
             ->setParameter('id', $id);
+
         return $qb->getQuery()->getOneOrNullResult();
     }
 }

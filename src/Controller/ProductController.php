@@ -21,8 +21,7 @@ class ProductController extends AbstractController
         ProductRepository $productRepository,
         CategoryRepository $categoryRepository,
         EntityManagerInterface $em
-    )
-    {
+    ){
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->em = $em;
@@ -31,9 +30,10 @@ class ProductController extends AbstractController
     /**
      * @Route("/products", name="products", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $products = $this->productRepository->getProducts();
+        $sortDir = $request->query->get('sortDir') ?? 'ASC';
+        $products = $this->productRepository->getProducts($sortDir);
 
         return $this->render('product/index.html.twig', ['products' => $products]);
     }
@@ -41,9 +41,10 @@ class ProductController extends AbstractController
     /**
      * @Route("/open-create-modal", name="open_create_modal", methods={"GET"})
      */
-    public function openCreateModal(): Response
+    public function openCreateModal(Request $request): Response
     {
-        $categories = $this->categoryRepository->getCategories();
+        $sortDir = $request->query->get('sortDir') ?? 'ASC';
+        $categories = $this->categoryRepository->getCategories($sortDir);
 
         return $this->render('product/new.html.twig', ['categories' => $categories]);
     }
