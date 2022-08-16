@@ -24,7 +24,6 @@ final class Version20220815190945 extends AbstractMigration
         $this->addSql('ALTER TABLE messenger_messages CHANGE queue_name queue_name VARCHAR(190) NOT NULL');
         $this->addSql('CREATE INDEX IDX_75EA56E0FB7336F0 ON messenger_messages (queue_name)');
         $this->addSql('CREATE INDEX IDX_75EA56E0E3BD61CE ON messenger_messages (available_at)');
-        $this->addSql('ALTER TABLE todo CHANGE is_completed is_completed TINYINT(1) DEFAULT 0 NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -34,6 +33,5 @@ final class Version20220815190945 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_75EA56E0FB7336F0 ON messenger_messages');
         $this->addSql('DROP INDEX IDX_75EA56E0E3BD61CE ON messenger_messages');
         $this->addSql('ALTER TABLE messenger_messages CHANGE queue_name queue_name VARCHAR(255) NOT NULL');
-        $this->addSql('ALTER TABLE todo CHANGE is_completed is_completed TINYINT(1) NOT NULL');
     }
 }

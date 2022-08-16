@@ -28,7 +28,7 @@ class Todo
     private $created_at;
 
     /**
-     * @ORM\Column(type="boolean", options={"default" = false})
+     * @ORM\Column(type="boolean")
      */
     private $isCompleted;
 
