@@ -28,6 +28,11 @@ class Todo
     private \DateTimeInterface $created_at;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTimeInterface $completed_at;
+
+    /**
      * @ORM\Column(type="boolean", options={"default" = false})
      */
     private bool $isCompleted;
@@ -59,6 +64,16 @@ class Todo
         $this->created_at = $created_at;
 
         return $this;
+    }
+
+    public function getCompletedAt(): \DateTimeInterface
+    {
+        return $this->completed_at;
+    }
+
+    public function setCompletedAt(\DateTimeInterface $completed_at): void
+    {
+        $this->completed_at = $completed_at;
     }
 
     public function isIsCompleted(): ?bool
