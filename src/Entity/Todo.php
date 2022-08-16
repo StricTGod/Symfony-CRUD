@@ -15,22 +15,22 @@ class Todo
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private \DateTimeInterface $created_at;
 
     /**
      * @ORM\Column(type="boolean", options={"default" = false})
      */
-    private $isCompleted;
+    private bool $isCompleted;
 
     public function getId(): ?int
     {
