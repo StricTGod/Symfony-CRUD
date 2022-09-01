@@ -37,54 +37,75 @@ class Todo
      */
     private bool $isCompleted;
 
-    public function getId(): ?int
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    /**
+     * @param \DateTimeInterface $created_at
+     */
+    public function setCreatedAt(\DateTimeInterface $created_at): void
     {
         $this->created_at = $created_at;
-
-        return $this;
     }
 
-    public function getCompletedAt(): \DateTimeInterface
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getCompletedAt(): ?\DateTimeInterface
     {
         return $this->completed_at;
     }
 
-    public function setCompletedAt(\DateTimeInterface $completed_at): void
+    /**
+     * @param \DateTimeInterface|null $completed_at
+     */
+    public function setCompletedAt(?\DateTimeInterface $completed_at): void
     {
         $this->completed_at = $completed_at;
     }
 
-    public function isIsCompleted(): ?bool
+    /**
+     * @return bool
+     */
+    public function getIsCompleted(): bool
     {
         return $this->isCompleted;
     }
 
-    public function setIsCompleted(bool $isCompleted): self
+    /**
+     * @param bool $isCompleted
+     */
+    public function setIsCompleted(bool $isCompleted): void
     {
         $this->isCompleted = $isCompleted;
-
-        return $this;
     }
 }

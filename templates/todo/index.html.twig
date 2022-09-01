@@ -6,17 +6,91 @@
     <div class="example-wrapper">
         <table class="table table-striped">
             <tr>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Created_at</th>
-                <th>isCompleted</th>
+                <th>Is_Completed</th>
+                <th>Actions</th>
             </tr>
             {% for todo in todos %}
                 <tr>
+                    <td class="todoId">{{ todo.id }}</td>
                     <td>{{ todo.name }}</td>
                     <td>{{ todo.createdAt|date('Y-m-d') }}</td>
-                    <td>{{ todo.isCompleted ? true : false }}</td>
+                    <td class="isCompleted"> {{ todo.isCompleted ? 'true' : 'false' }}</td>
+                    <td>
+                        <input type="button" id="true-{{ todo.id }}" class="true" value="1">
+                        <input type="button" id="false-{{ todo.id }}" class="false" value="0">
+                    </td>
                 </tr>
             {% endfor %}
         </table>
     </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                url: "{{ path('show_todo_data') }}",
+                type: "GET",
+                success: function (data) {
+                    applyStyles(data);
+                }
+            });
+
+            function applyStyles(todos) {
+                todos.forEach(function (todo) {
+                    if (todo.isCompleted) {
+                        $(`#true-${todo.id}`).css('display', 'none');
+                        $(`#false-${todo.id}`).css('display', 'inline');
+                    } else {
+                        $(`#true-${todo.id}`).css('display', 'inline');
+                        $(`#false-${todo.id}`).css('display', 'none');
+                    }
+                });
+            }
+
+            $(".true").on("click", function () {
+                var id = $(this).closest("tr").find("td:eq(0)").text();
+
+                var val = $(".true").val();
+
+                var data = {
+                    'id': id,
+                    'isCompleted': val
+                };
+
+                $.ajax({
+                    url: "{{ path('is_completed_action') }}",
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    success: function () {
+                        window.location.reload();
+                    }
+                })
+            });
+
+            $(".false").on("click", function () {
+                var id = $(this).closest("tr").find("td:eq(0)").text();
+
+                var val = $(".false").val();
+
+                var data = {
+                    'id': id,
+                    'isCompleted': val
+                };
+
+                $.ajax({
+                    url: "{{ path('is_completed_action') }}",
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    success: function () {
+                        window.location.reload();
+                    }
+                })
+            });
+        });
+    </script>
 {% endblock %}

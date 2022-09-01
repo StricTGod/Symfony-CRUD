@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Todo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Symfony\Component\Translation\t;
 
 /**
  * @extends ServiceEntityRepository<Todo>
@@ -19,5 +20,14 @@ class TodoRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Todo::class);
+    }
+
+    public function getTodoById($id)
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->where('t.id = :id')
+            ->setParameter('id', $id);
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }
