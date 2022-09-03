@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TodoController extends AbstractController
@@ -38,7 +39,7 @@ class TodoController extends AbstractController
     /**
      * @Route("/show-todo-data", name="show_todo_data", methods={"GET"})
      */
-    public function showTodoData(): \Symfony\Component\HttpFoundation\JsonResponse
+    public function showTodoData(): JsonResponse
     {
         return $this->json($this->todoRepository->findAll());
     }
@@ -57,5 +58,18 @@ class TodoController extends AbstractController
         $this->em->flush();
 
         return $this->redirectToRoute('todo');
+    }
+
+    /**
+     * @Route("/todo-delete/{id}", name="todo_delete", methods={"DELETE"})
+     */
+    public function deleteTodo(int $id): JsonResponse
+    {
+        $todo = $this->todoRepository->getTodoById($id);
+
+        $this->em->remove($todo);
+        $this->em->flush();
+
+        return $this->json([]);
     }
 }
