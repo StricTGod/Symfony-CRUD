@@ -49,14 +49,21 @@
 
             function applyStyles(todos) {
                 todos.forEach(function (todo) {
+
+                    var selectorTrue = `#true-${todo.id}`;
+
+                    var selectorFalse = `#false-${todo.id}`;
+
+                    var selectorBackground = `#isCompletedValue-${todo.id}`;
+
                     if (todo.isCompleted) {
-                        $(`#true-${todo.id}`).css('display', 'none');
-                        $(`#false-${todo.id}`).css('display', 'inline');
-                        $(`#isCompletedValue-${todo.id}`).css({"background-color": "#198754"});
+                        $(selectorTrue).css('display', 'none');
+                        $(selectorFalse).css('display', 'inline');
+                        $(selectorBackground).css({"background-color": "#198754"});
                     } else {
-                        $(`#true-${todo.id}`).css('display', 'inline');
-                        $(`#false-${todo.id}`).css('display', 'none');
-                        $(`#isCompletedValue-${todo.id}`).css({"background-color": "#dc3545"});
+                        $(selectorTrue).css('display', 'inline');
+                        $(selectorFalse).css('display', 'none');
+                        $(selectorBackground).css({"background-color": "#dc3545"});
                     }
                 });
             }
