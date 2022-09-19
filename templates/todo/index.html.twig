@@ -19,7 +19,8 @@
                             <td class="todoId">{{ todo.id }}</td>
                             <td>{{ todo.name }}</td>
                             <td>{{ todo.createdAt|date('Y-m-d') }}</td>
-                            <td class="isCompleted"> {{ todo.isCompleted ? 'true' : 'false' }}</td>
+                            <td class="isCompleted"
+                                id="isCompletedValue-{{ todo.id }}"> {{ todo.isCompleted ? 'true' : 'false' }}</td>
                             <td>
                                 <button type="button" id="true-{{ todo.id }}" class="btn btn-success true" value="1">
                                     Completed
@@ -27,6 +28,7 @@
                                 <button type="button" id="false-{{ todo.id }}" class="btn btn-danger false" value="0">
                                     Uncompleted
                                 </button>
+                                <button type="button" id="delete" class="btn btn-secondary delete">Delete</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -37,7 +39,6 @@
 
     <script>
         $(document).ready(function () {
-
             $.ajax({
                 url: "{{ path('show_todo_data') }}",
                 type: "GET",
@@ -48,12 +49,21 @@
 
             function applyStyles(todos) {
                 todos.forEach(function (todo) {
+
+                    var selectorTrue = `#true-${todo.id}`;
+
+                    var selectorFalse = `#false-${todo.id}`;
+
+                    var selectorBackground = `#isCompletedValue-${todo.id}`;
+
                     if (todo.isCompleted) {
-                        $(`#true-${todo.id}`).css('display', 'none');
-                        $(`#false-${todo.id}`).css('display', 'inline');
+                        $(selectorTrue).css('display', 'none');
+                        $(selectorFalse).css('display', 'inline');
+                        $(selectorBackground).css({"background-color": "#198754"});
                     } else {
-                        $(`#true-${todo.id}`).css('display', 'inline');
-                        $(`#false-${todo.id}`).css('display', 'none');
+                        $(selectorTrue).css('display', 'inline');
+                        $(selectorFalse).css('display', 'none');
+                        $(selectorBackground).css({"background-color": "#dc3545"});
                     }
                 });
             }
@@ -94,6 +104,20 @@
                     type: "POST",
                     data: data,
                     cache: false,
+                    success: function () {
+                        window.location.reload();
+                    }
+                })
+            });
+
+
+            $('.delete').on("click", function () {
+
+                var id = $(this).closest("tr").find("td:eq(0)").text();
+
+                $.ajax({
+                    url: "/todo-delete/" + id,
+                    type: "DELETE",
                     success: function () {
                         window.location.reload();
                     }
