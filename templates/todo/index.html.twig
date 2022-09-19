@@ -44,7 +44,6 @@
                 type: "GET",
                 success: function (data) {
                     applyStyles(data);
-                    applyColors(data);
                 }
             });
 
@@ -53,19 +52,11 @@
                     if (todo.isCompleted) {
                         $(`#true-${todo.id}`).css('display', 'none');
                         $(`#false-${todo.id}`).css('display', 'inline');
+                        $(`#isCompletedValue-${todo.id}`).css({"background-color": "#198754"});
                     } else {
                         $(`#true-${todo.id}`).css('display', 'inline');
                         $(`#false-${todo.id}`).css('display', 'none');
-                    }
-                });
-            }
-
-            function applyColors(todos) {
-                todos.forEach(function (todo) {
-                    if (todo.isCompleted) {
-                        $(`#isCompletedValue-${todo.id}`).css({"background": "#198754"});
-                    } else {
-                        $(`#isCompletedValue-${todo.id}`).css({"background": "#dc3545"});
+                        $(`#isCompletedValue-${todo.id}`).css({"background-color": "#dc3545"});
                     }
                 });
             }
