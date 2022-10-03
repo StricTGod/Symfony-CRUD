@@ -55,6 +55,6 @@ class RegistrationController extends AbstractController
         $this->em->persist($user);
         $this->em->flush();
 
-        return $this->redirectToRoute('todo');
+        return new Response('Registration was successful');
     }
 }
